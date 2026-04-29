@@ -18,7 +18,7 @@
  * telegramService failure does NOT affect DB state.
  */
 
-const pool            = require('../db/pool');
+const pool            = require('../../db/pool');
 const telegramService = require('./telegramService');
 const { ACTIVE_LEAD_LIMIT, ADMIN_CHAT_ID } = require('../../config/config');
 
@@ -227,20 +227,29 @@ async function reassignLead(leadId, reason) {
     }
 
     const lead = leadRows[0];
-    assertTransition(lead.status, reason);
 
-    // Stamp the outgoing assignment row
-    await client.query(
-      `UPDATE lead_assignments
-       SET    status = $1
-       WHERE  lead_id   = $2 AND worker_id = $3 AND status = 'sent'`,
-      [reason, leadId, lead.worker_id]
-    );
-
-    await client.query(
-      `UPDATE leads SET status = $1, updated_at = NOW() WHERE id = $2`,
-      [reason, leadId]
-    );
+    // timeoutService may bulk-set lead to 'timeout' before calling reassignLead; in that case
+    // assertTransition('timeout','timeout') would fail — only sync assignment rows and continue.
+    if (lead.status === reason && reason === 'timeout') {
+      await client.query(
+        `UPDATE lead_assignments
+         SET    status = $1
+         WHERE  lead_id   = $2 AND worker_id = $3 AND status = 'sent'`,
+        [reason, leadId, lead.worker_id]
+      );
+    } else {
+      assertTransition(lead.status, reason);
+      await client.query(
+        `UPDATE lead_assignments
+         SET    status = $1
+         WHERE  lead_id   = $2 AND worker_id = $3 AND status = 'sent'`,
+        [reason, leadId, lead.worker_id]
+      );
+      await client.query(
+        `UPDATE leads SET status = $1, updated_at = NOW() WHERE id = $2`,
+        [reason, leadId]
+      );
+    }
 
     const worker = await pickWorker(client, leadId, lead.city_id);
 

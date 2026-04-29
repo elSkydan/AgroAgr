@@ -3,9 +3,11 @@
 /**
  * routes/leads.js + controller
  *
- * POST   /api/leads            — public, rate-limited
- * GET    /api/leads/:id        — admin
- * PATCH  /api/leads/:id/cancel — admin, restricted statuses
+ * POST   /api/leads             — public, rate-limited
+ * GET    /api/leads             — admin, paginated
+ * GET    /api/leads/debug/stats — admin (registered before /:id)
+ * GET    /api/leads/:id         — admin
+ * PATCH  /api/leads/:id/cancel  — admin, restricted statuses
  */
 
 const express  = require('express');
@@ -143,23 +145,111 @@ router.post('/', rateLimiter, validateLead, async (req, res) => {
     console.error(`[POST /leads] assignLead failed for lead ${leadId}:`, err);
     // Lead is already persisted; return 201 but flag that assignment failed
     return res.status(201).json({
-      lead_id:     leadId,
-      total_price: totalPrice,
-      status:      'new',
-      assigned:    false,
-      message:     'Lead received. Assignment failed — admin has been notified.',
+      lead_id:         leadId,
+      total_price:     totalPrice,
+      status:          'new',
+      assigned:        false,
+      assigned_worker: null,
+      message:         'Lead received. Assignment failed — admin has been notified.',
     });
   }
 
   return res.status(201).json({
-    lead_id:     leadId,
-    total_price: totalPrice,
-    status:      assignmentResult.status,
-    assigned:    assignmentResult.assigned,
-    message:     assignmentResult.assigned
+    lead_id:         leadId,
+    total_price:     totalPrice,
+    status:          assignmentResult.status,
+    assigned:        assignmentResult.assigned,
+    assigned_worker: assignmentResult.worker
+      ? { id: assignmentResult.worker.id, name: assignmentResult.worker.name }
+      : null,
+    message:         assignmentResult.assigned
       ? 'Lead received. A specialist will contact you shortly.'
       : 'Lead received. No specialists available right now — we will call you back.',
   });
+});
+
+// ---------------------------------------------------------------------------
+// GET /api/leads  (admin, paginated)
+// ---------------------------------------------------------------------------
+
+router.get('/', auth, async (req, res) => {
+  const limit  = Math.min(parseInt(req.query.limit, 10)  || 50, 100);
+  const offset = Math.max(parseInt(req.query.offset, 10) || 0,  0);
+  const status = req.query.status ?? null;
+
+  const SORT_MAP = {
+    'created_at_desc': 'l.created_at DESC',
+    'created_at_asc':  'l.created_at ASC',
+  };
+  const orderBy = SORT_MAP[req.query.sort] ?? 'l.created_at DESC';
+
+  const conditions = [];
+  const values     = [];
+  let   idx        = 1;
+
+  if (status) {
+    conditions.push(`l.status = $${idx++}`);
+    values.push(status);
+  }
+
+  const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
+
+  try {
+    const countRes = await pool.query(
+      `SELECT COUNT(*) FROM leads l ${where}`,
+      values
+    );
+    const total = parseInt(countRes.rows[0].count, 10);
+
+    values.push(limit, offset);
+    const { rows } = await pool.query(
+      `SELECT l.id, l.name, l.phone_normalized, l.service_type,
+              l.area, l.total_price, l.city_id, l.status,
+              l.created_at, l.updated_at,
+              w.id   AS worker_id,
+              w.name AS worker_name
+       FROM   leads l
+       LEFT JOIN workers w ON w.id = l.worker_id
+       ${where}
+       ORDER BY ${orderBy}
+       LIMIT $${idx++} OFFSET $${idx++}`,
+      values
+    );
+
+    res.json({
+      total,
+      limit,
+      offset,
+      data: rows,
+    });
+  } catch (err) {
+    console.error('[GET /leads]', err);
+    res.status(500).json({ error: 'Database error' });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// GET /api/leads/debug/stats  (admin) — must be before /:id
+// ---------------------------------------------------------------------------
+
+router.get('/debug/stats', auth, async (req, res) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT
+         (SELECT COUNT(*) FROM leads)                                    AS total_leads,
+         (SELECT COUNT(*) FROM workers WHERE is_active = TRUE)          AS active_workers,
+         (SELECT COUNT(*) FROM leads WHERE status IN ('new','assigned')) AS pending_leads`
+    );
+    const r = rows[0];
+    res.json({
+      total_leads:    parseInt(r.total_leads, 10),
+      active_workers: parseInt(r.active_workers, 10),
+      pending_leads:  parseInt(r.pending_leads, 10),
+    });
+  } catch (err) {
+    console.error('[GET /debug/stats]', err);
+    res.status(500).json({ error: 'Database error' });
+  }
 });
 
 // ---------------------------------------------------------------------------

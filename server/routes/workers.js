@@ -2,11 +2,11 @@
 
 const express = require('express');
 const router  = express.Router();
-const pool    = require('../db/pool');
-const requireAdminAuth = require('../middlewares/auth');
+const pool    = require('../../db/pool');
+const auth    = require('../middlewares/auth');
 
 // GET /api/workers
-router.get('/', requireAdminAuth, async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const { rows } = await pool.query(
       `SELECT w.id, w.name, w.city_id, w.priority, w.is_active,
@@ -23,11 +23,18 @@ router.get('/', requireAdminAuth, async (req, res) => {
 });
 
 // POST /api/workers
-router.post('/', requireAdminAuth, async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { name, city_id, priority = 0, is_active = true, phone, telegram_chat_id, equipment_type } = req.body;
 
   if (!name || !city_id) {
     return res.status(400).json({ error: 'name and city_id are required' });
+  }
+  if (telegram_chat_id === undefined || telegram_chat_id === null || telegram_chat_id === '') {
+    return res.status(400).json({ error: 'telegram_chat_id is required' });
+  }
+  const tgNum = typeof telegram_chat_id === 'string' ? Number(telegram_chat_id) : telegram_chat_id;
+  if (!Number.isFinite(tgNum)) {
+    return res.status(400).json({ error: 'telegram_chat_id must be a numeric Telegram chat id' });
   }
 
   try {
@@ -35,7 +42,7 @@ router.post('/', requireAdminAuth, async (req, res) => {
       `INSERT INTO workers (name, city_id, priority, is_active, phone, telegram_chat_id, equipment_type)
        VALUES ($1, $2, $3, $4, $5, $6, $7)
        RETURNING *`,
-      [name, city_id, priority, is_active, phone ?? null, telegram_chat_id ?? null, equipment_type ?? 'motoblock']
+      [name, city_id, priority, is_active, phone ?? null, tgNum, equipment_type ?? 'motoblock']
     );
     res.status(201).json(rows[0]);
   } catch (err) {
@@ -45,13 +52,12 @@ router.post('/', requireAdminAuth, async (req, res) => {
 });
 
 // PATCH /api/workers/:id
-router.patch('/:id', requireAdminAuth, async (req, res) => {
+router.patch('/:id', auth, async (req, res) => {
   const id = parseInt(req.params.id, 10);
   if (!Number.isFinite(id)) return res.status(400).json({ error: 'Invalid worker id' });
 
   const { name, city_id, priority, is_active, phone, telegram_chat_id, equipment_type } = req.body;
 
-  // Build dynamic SET clause from provided fields only
   const fields = [];
   const values = [];
   let idx = 1;
@@ -61,7 +67,14 @@ router.patch('/:id', requireAdminAuth, async (req, res) => {
   if (priority         !== undefined) { fields.push(`priority = $${idx++}`);          values.push(priority); }
   if (is_active        !== undefined) { fields.push(`is_active = $${idx++}`);         values.push(is_active); }
   if (phone            !== undefined) { fields.push(`phone = $${idx++}`);             values.push(phone); }
-  if (telegram_chat_id !== undefined) { fields.push(`telegram_chat_id = $${idx++}`);  values.push(telegram_chat_id); }
+  if (telegram_chat_id !== undefined) {
+    const tgNum = typeof telegram_chat_id === 'string' ? Number(telegram_chat_id) : telegram_chat_id;
+    if (!Number.isFinite(tgNum)) {
+      return res.status(400).json({ error: 'telegram_chat_id must be a numeric Telegram chat id' });
+    }
+    fields.push(`telegram_chat_id = $${idx++}`);
+    values.push(tgNum);
+  }
   if (equipment_type   !== undefined) { fields.push(`equipment_type = $${idx++}`);    values.push(equipment_type); }
 
   if (fields.length === 0) return res.status(400).json({ error: 'No fields to update' });
@@ -81,7 +94,7 @@ router.patch('/:id', requireAdminAuth, async (req, res) => {
 });
 
 // DELETE /api/workers/:id
-router.delete('/:id', requireAdminAuth, async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
   const id = parseInt(req.params.id, 10);
   if (!Number.isFinite(id)) return res.status(400).json({ error: 'Invalid worker id' });
 
