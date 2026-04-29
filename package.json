@@ -1,0 +1,17 @@
+{
+  "name": "lead-distribution",
+  "version": "1.0.0",
+  "description": "Field cultivation lead distribution system",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.6.1",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.3.1",
+    "node-cron": "^3.0.3",
+    "pg": "^8.12.0"
+  }
+}
