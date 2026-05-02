@@ -1,0 +1,255 @@
+/* ========================================
+   GLOBAL
+======================================== */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+/* ========================================
+   NAVBAR
+======================================== */
+#navbar {
+  background: transparent;
+}
+
+#navbar.scrolled {
+  background: rgba(15, 20, 15, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25);
+}
+
+.navbar-cta {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.navbar-cta:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* ========================================
+   HERO
+======================================== */
+.hero-bg {
+  background-color: #1a2a18;
+  background-image:
+    url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=1800&q=85');
+  background-size: cover;
+  background-position: center 40%;
+  background-repeat: no-repeat;
+}
+
+.hero-overlay {
+  background: linear-gradient(
+    105deg,
+    rgba(10, 16, 8, 0.80) 0%,
+    rgba(10, 16, 8, 0.65) 50%,
+    rgba(10, 16, 8, 0.45) 100%
+  );
+}
+
+.hero-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.hero-card:hover {
+  background: rgba(255, 255, 255, 0.13);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+/* ========================================
+   SERVICE CARDS
+======================================== */
+.service-card {
+  cursor: default;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.service-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
+}
+
+/* ========================================
+   RANGE SLIDER
+======================================== */
+.range-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 999px;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #3E7B31;
+  cursor: pointer;
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px #3E7B31, 0 2px 8px rgba(62, 123, 49, 0.35);
+  transition: box-shadow 0.2s;
+}
+
+.range-slider::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 2px #3E7B31, 0 2px 16px rgba(62, 123, 49, 0.5);
+}
+
+.range-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #3E7B31;
+  cursor: pointer;
+  border: 3px solid white;
+  box-shadow: 0 0 0 2px #3E7B31, 0 2px 8px rgba(62, 123, 49, 0.35);
+}
+
+/* ========================================
+   BEFORE/AFTER CARDS
+======================================== */
+.before-after-card {
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.before-after-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.10);
+}
+
+.ba-btn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.ba-btn.active-before {
+  color: #ef4444;
+  background: #fef2f2;
+}
+
+.ba-btn.active-after {
+  color: #3E7B31;
+  background: #f0f9ed;
+}
+
+.ba-btn:not(.active-before):not(.active-after) {
+  color: #9ca3af;
+}
+
+.ba-btn:hover:not(.active-before):not(.active-after) {
+  color: #3E7B31;
+}
+
+.ba-after {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.ba-after.visible {
+  opacity: 1;
+}
+
+/* ========================================
+   FORM ELEMENTS
+======================================== */
+input[type="text"],
+input[type="tel"],
+select,
+textarea {
+  font-family: inherit;
+}
+
+select option {
+  padding: 8px;
+}
+
+/* ========================================
+   ANIMATIONS
+======================================== */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.5s ease both;
+}
+
+/* ========================================
+   SCROLL PROGRESS TRACK ON SLIDER
+======================================== */
+.range-slider-track {
+  position: relative;
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+======================================== */
+@media (max-width: 640px) {
+  h1 {
+    font-size: 2.25rem;
+    line-height: 1.2;
+  }
+}
+
+/* ========================================
+   UTILITY: smooth transitions for
+   before/after section image labels
+======================================== */
+.ba-label {
+  transition: background 0.2s;
+}
+
+/* ========================================
+   PRIMARY COLOR CSS VARS
+======================================== */
+:root {
+  --color-primary: #3E7B31;
+  --color-primary-dark: #2d5c23;
+  --color-primary-light: #4e9a3d;
+}
+
+/* ========================================
+   FOCUS VISIBLE
+======================================== */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
