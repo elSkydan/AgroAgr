@@ -280,9 +280,7 @@
         <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">Розрахуйте вартість і залиште заявку</h2>
         <p class="text-gray-500">Оберіть послугу, вкажіть площу — і одразу залишайте заявку.<br class="hidden sm:block" />Передзвонимо протягом 15 хвилин.</p>
       </div>
-
       <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-
         <!-- CALCULATOR -->
         <div class="rounded-2xl overflow-hidden shadow-sm border border-gray-100">
           <div class="bg-primary px-6 py-4 flex items-center gap-3">
@@ -298,8 +296,8 @@
               <label class="block text-sm font-medium text-gray-700 mb-2">Послуга</label>
               <div class="relative">
                 <select id="calc-service" class="w-full appearance-none bg-white border border-gray-200 rounded-xl px-4 py-3 pr-10 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary cursor-pointer">
-                  <option value="ogorod">🌾 Огород / вспашка</option>
-                  <option value="celina">🌿 Цілина</option>
+                  <option value="ogorod">🌾 Огород / вспашка — від 300 грн</option>
+                  <option value="celina">🌿 Цілина — від 600 грн</option>
                   <option value="mowing">🌺 Покос трави — 150 грн/сот.</option>
                   <option value="tree">🌳 Демонтаж дерева — від 500 грн</option>
                   <option value="washing">🚿 Мийка техніки — від 200 грн</option>
@@ -309,18 +307,16 @@
                 </div>
               </div>
             </div>
-
             <!-- Area (sotkas) -->
             <div id="area-section" class="mb-6">
               <label class="block text-sm font-medium text-gray-700 mb-2">Площа (соток)</label>
-              <input id="calc-area-input" type="number" min="3" max="50" step="0.1" value="3" inputmode="decimal" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" />
-              <p id="calc-area-hint" class="text-xs text-gray-500 mt-1">Мінімум 3 сот. · максимум 50 сот.</p>
+              <input id="calc-area-input" type="number" min="5" max="50" step="0.1" value="5" inputmode="decimal" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary" />
+              <p id="calc-area-hint" class="text-xs text-gray-500 mt-1">Мінімум 5 сот. · максимум 50 сот.</p>
               <p class="text-xs text-gray-500 mt-2">
-                Для розрахунку: <span id="area-effective" class="text-primary font-semibold">3</span> сот.
+                Для розрахунку: <span id="area-effective" class="text-primary font-semibold">5</span> сот.
                 <span class="text-gray-400">(округлення до 0,5 сот.)</span>
               </p>
             </div>
-
             <!-- Outskirts & grass (UI) -->
             <div class="mb-4 flex flex-col gap-3">
               <div class="flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4">
@@ -339,18 +335,15 @@
                 </div>
               </div>
             </div>
-
             <!-- Price formula display -->
-            <div id="price-formula" class="text-sm text-gray-500 mb-3">Огород: ділянка ≤3 сот. — пакет 1700 грн</div>
-
+            <div id="price-formula" class="text-sm text-gray-500 mb-3">Огород: 5 × 300 грн/сот. (мін. 5 сот.)</div>
             <!-- Price result -->
             <div class="bg-primary/5 border border-primary/20 rounded-xl p-4">
               <div class="flex items-center justify-between">
                 <span class="text-gray-600 text-sm font-medium">Орієнтовно:</span>
-                <span id="calc-price" class="calc-price-display text-primary font-extrabold text-3xl tabular-nums">1700 грн</span>
+                <span id="calc-price" class="calc-price-display text-primary font-extrabold text-3xl tabular-nums">1500 грн</span>
               </div>
             </div>
-
             <!-- Disclaimer -->
             <div class="mt-4 flex items-start gap-2 text-amber-700 bg-amber-50 rounded-xl p-3">
               <i data-lucide="triangle-alert" class="w-4 h-4 flex-shrink-0 mt-0.5"></i>
@@ -358,7 +351,6 @@
             </div>
           </div>
         </div>
-
         <!-- FORM -->
         <div class="rounded-2xl overflow-hidden shadow-sm border border-gray-100">
           <div class="bg-primary-dark px-6 py-4 flex items-center gap-3">
@@ -375,21 +367,19 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">Ваше ім'я</label>
                 <input type="text" id="form-name" placeholder="Наприклад, Іван" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all" />
               </div>
-
               <!-- Phone -->
               <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Номер телефону <span class="text-red-500">*</span></label>
                 <input type="tel" id="form-phone" placeholder="+38 (___) ___ - __- __" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all" required />
                 <p id="phone-error" class="text-red-500 text-xs mt-1 hidden">Введіть коректний номер телефону</p>
               </div>
-
               <!-- Service -->
               <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Яка послуга потрібна?</label>
                 <div class="relative">
                   <select id="form-service" class="w-full appearance-none bg-white border border-gray-200 rounded-xl px-4 py-3 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary cursor-pointer">
-                    <option value="ogorod">🌾 Огород / вспашка</option>
-                    <option value="celina">🌿 Цілина</option>
+                    <option value="ogorod">🌾 Огород / вспашка — від 300 грн</option>
+                    <option value="celina">🌿 Цілина — від 600 грн</option>
                     <option value="mowing">🌺 Покос трави — 150 грн/сот.</option>
                     <option value="tree">🌳 Демонтаж дерева — від 500 грн</option>
                     <option value="washing">🚿 Мийка техніки — від 200 грн</option>
@@ -399,13 +389,11 @@
                   </div>
                 </div>
               </div>
-
               <!-- Comment -->
               <div class="mb-5">
                 <label class="block text-sm font-medium text-gray-700 mb-2">Коментар <span class="text-gray-400 font-normal">(необов'язково)</span></label>
                 <textarea id="form-comment" rows="3" placeholder="Площа ділянки, адреса, зручний час виїзду..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none"></textarea>
               </div>
-
               <!-- Perks -->
               <div class="flex flex-col gap-2 mb-5">
                 <div class="flex items-center gap-2 text-gray-600 text-xs">
@@ -427,18 +415,15 @@
                   Оплата після виконання роботи
                 </div>
               </div>
-
               <!-- Submit -->
               <button type="submit" id="submit-btn" class="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3.5 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:shadow-primary/30">
                 <i data-lucide="send" class="w-4 h-4"></i>
                 Надіслати заявку
               </button>
-
               <p class="text-center text-gray-400 text-xs mt-3">
                 Або зателефонуйте прямо зараз: <a href="tel:+380000000000" class="text-primary font-medium hover:underline">+38 (000) 000-00-00</a>
               </p>
             </form>
-
             <!-- Success state -->
             <div id="form-success" class="hidden text-center py-8">
               <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -452,7 +437,6 @@
       </div>
     </div>
   </section>
-
   <!-- HOW WE WORK -->
   <section id="how" class="py-16 sm:py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -506,7 +490,6 @@
       </div>
     </div>
   </section>
-
   <!-- BEFORE/AFTER SECTION -->
   <section id="works" class="py-16 sm:py-20 bg-gray-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -515,9 +498,7 @@
         <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">До і після</h2>
         <p class="text-gray-500">Натисніть на фото, щоб побачити результат нашої роботи</p>
       </div>
-
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-
         <!-- Card 1 -->
         <div class="before-after-card rounded-2xl overflow-hidden shadow-sm border border-gray-100 bg-white">
           <div class="relative">
@@ -541,7 +522,6 @@
             </div>
           </div>
         </div>
-
         <!-- Card 2 -->
         <div class="before-after-card rounded-2xl overflow-hidden shadow-sm border border-gray-100 bg-white">
           <div class="relative">
@@ -565,7 +545,6 @@
             </div>
           </div>
         </div>
-
         <!-- Card 3 -->
         <div class="before-after-card rounded-2xl overflow-hidden shadow-sm border border-gray-100 bg-white">
           <div class="relative">
@@ -593,182 +572,6 @@
       </div>
     </div>
   </section>
-
-  <!-- CALCULATOR + FORM SECTION -->
-
-  <section id="pricing" class="py-16 sm:py-20 bg-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-12">
-        <span class="inline-block bg-gray-100 text-gray-600 text-sm font-medium px-4 py-1.5 rounded-full mb-4">Ціни та заявка</span>
-        <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">Розрахуйте вартість і залиште заявку</h2>
-        <p class="text-gray-500">Оберіть послугу, вкажіть площу — і одразу залишайте заявку.<br class="hidden sm:block" />Передзвонимо протягом 15 хвилин.</p>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-
-        <!-- CALCULATOR -->
-        <div class="rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-          <div class="bg-primary px-6 py-4 flex items-center gap-3">
-            <i data-lucide="calculator" class="w-5 h-5 text-white"></i>
-            <div>
-              <h3 class="text-white font-semibold">Калькулятор вартості</h3>
-              <p class="text-white/70 text-xs">Оберіть послугу і площу</p>
-            </div>
-          </div>
-          <div class="bg-white p-6">
-            <!-- Service select -->
-            <div class="mb-6">
-              <label class="block text-sm font-medium text-gray-700 mb-2">Послуга</label>
-              <div class="relative">
-                <select id="calc-service" class="w-full appearance-none bg-white border border-gray-200 rounded-xl px-4 py-3 pr-10 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary cursor-pointer">
-                  <option value="plowing">🌾 Огород / Вспашка</option>
-                  <option value="virgin">🌿 Цілина</option>
-                  <option value="mowing">🌺 Покос трави</option>
-                  <option value="tree">🌳 Демонтаж дерева</option>
-                  <option value="washing">🚿 Мийка техніки</option>
-                </select>
-                <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3">
-                  <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i>
-                </div>
-              </div>
-            </div>
-
-            <!-- Area slider -->
-            <div id="area-section" class="mb-6">
-              <div class="flex justify-between items-center mb-2">
-                <label class="text-sm font-medium text-gray-700">Площа</label>
-                <span id="area-display" class="text-primary font-bold text-sm">3 сот.</span>
-              </div>
-              <input id="area-slider" type="range" min="1" max="50" value="3" step="1" class="range-slider w-full" />
-              <div class="flex justify-between text-xs text-gray-400 mt-1">
-                <span>1 сот.</span>
-                <span>25 сот.</span>
-                <span>50 сот.</span>
-              </div>
-            </div>
-
-            <!-- Outskirts checkbox -->
-            <div class="mb-6 flex items-start gap-3 bg-amber-50 border border-amber-200 rounded-xl p-4">
-              <input id="outskirts-cb" type="checkbox" class="w-4 h-4 accent-primary mt-0.5 cursor-pointer" />
-              <div>
-                <label for="outskirts-cb" class="text-sm font-semibold text-gray-800 cursor-pointer">За містом</label>
-                <p class="text-xs text-gray-500 mt-0.5">Доплата за виїзд +200 грн</p>
-              </div>
-            </div>
-
-            <!-- Price formula display -->
-            <div id="price-formula" class="text-sm text-gray-500 mb-3">120 грн × 3 сот. (мін. 300 грн)</div>
-
-            <!-- Price result -->
-            <div class="bg-primary/5 border border-primary/20 rounded-xl p-4">
-              <div class="flex items-center justify-between">
-                <span class="text-gray-600 text-sm font-medium">Орієнтовно:</span>
-                <span id="calc-price" class="text-primary font-extrabold text-3xl">360 грн</span>
-              </div>
-            </div>
-
-            <!-- Disclaimer -->
-            <div class="mt-4 flex items-start gap-2 text-amber-700 bg-amber-50 rounded-xl p-3">
-              <i data-lucide="triangle-alert" class="w-4 h-4 flex-shrink-0 mt-0.5"></i>
-              <p class="text-xs">Орієнтовна вартість. Точна ціна — після огляду ділянки.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- FORM -->
-        <div class="rounded-2xl overflow-hidden shadow-sm border border-gray-100">
-          <div class="bg-primary-dark px-6 py-4 flex items-center gap-3">
-            <i data-lucide="send" class="w-5 h-5 text-white"></i>
-            <div>
-              <h3 class="text-white font-semibold">Залишити заявку</h3>
-              <p class="text-white/70 text-xs">Передзвонимо протягом 15 хвилин</p>
-            </div>
-          </div>
-          <div class="bg-white p-6">
-            <form id="lead-form" novalidate>
-              <!-- Name -->
-              <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Ваше ім'я</label>
-                <input type="text" id="form-name" placeholder="Наприклад, Іван" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all" />
-              </div>
-
-              <!-- Phone -->
-              <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Номер телефону <span class="text-red-500">*</span></label>
-                <input type="tel" id="form-phone" placeholder="+38 (___) ___ - __- __" class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all" required />
-                <p id="phone-error" class="text-red-500 text-xs mt-1 hidden">Введіть коректний номер телефону</p>
-              </div>
-
-              <!-- Service -->
-              <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Яка послуга потрібна?</label>
-                <div class="relative">
-                  <select id="form-service" class="w-full appearance-none bg-white border border-gray-200 rounded-xl px-4 py-3 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary cursor-pointer">
-                    <option value="plowing">🌾 Огород / Вспашка</option>
-                    <option value="virgin">🌿 Цілина</option>
-                    <option value="mowing">🌺 Покос трави</option>
-                    <option value="tree">🌳 Демонтаж дерева</option>
-                    <option value="washing">🚿 Мийка техніки</option>
-                  </select>
-                  <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3">
-                    <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Comment -->
-              <div class="mb-5">
-                <label class="block text-sm font-medium text-gray-700 mb-2">Коментар <span class="text-gray-400 font-normal">(необов'язково)</span></label>
-                <textarea id="form-comment" rows="3" placeholder="Площа ділянки, адреса, зручний час виїзду..." class="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-all resize-none"></textarea>
-              </div>
-
-              <!-- Perks -->
-              <div class="flex flex-col gap-2 mb-5">
-                <div class="flex items-center gap-2 text-gray-600 text-xs">
-                  <div class="w-4 h-4 bg-primary/10 rounded-full flex items-center justify-center">
-                    <i data-lucide="check" class="w-3 h-3 text-primary"></i>
-                  </div>
-                  Безкоштовна консультація
-                </div>
-                <div class="flex items-center gap-2 text-gray-600 text-xs">
-                  <div class="w-4 h-4 bg-primary/10 rounded-full flex items-center justify-center">
-                    <i data-lucide="check" class="w-3 h-3 text-primary"></i>
-                  </div>
-                  Виїзд зазвичай того ж дня
-                </div>
-                <div class="flex items-center gap-2 text-gray-600 text-xs">
-                  <div class="w-4 h-4 bg-primary/10 rounded-full flex items-center justify-center">
-                    <i data-lucide="check" class="w-3 h-3 text-primary"></i>
-                  </div>
-                  Оплата після виконання роботи
-                </div>
-              </div>
-
-              <!-- Submit -->
-              <button type="submit" id="submit-btn" class="w-full bg-primary hover:bg-primary-dark text-white font-semibold py-3.5 px-6 rounded-xl transition-all duration-200 flex items-center justify-center gap-2 shadow-lg hover:shadow-primary/30">
-                <i data-lucide="send" class="w-4 h-4"></i>
-                Надіслати заявку
-              </button>
-
-              <p class="text-center text-gray-400 text-xs mt-3">
-                Або зателефонуйте прямо зараз: <a href="tel:+380000000000" class="text-primary font-medium hover:underline">+38 (000) 000-00-00</a>
-              </p>
-            </form>
-
-            <!-- Success state -->
-            <div id="form-success" class="hidden text-center py-8">
-              <div class="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i data-lucide="check-circle" class="w-8 h-8 text-primary"></i>
-              </div>
-              <h3 class="text-xl font-bold text-gray-900 mb-2">Заявку прийнято!</h3>
-              <p class="text-gray-500 text-sm">Передзвонимо вам протягом 15 хвилин</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- FOOTER -->
   <footer class="bg-gray-900 py-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

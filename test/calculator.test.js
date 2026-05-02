@@ -22,14 +22,13 @@ test('roundArea snaps to 0.5 sotka steps', () => {
   assert.strictEqual(roundArea(3), 3);
 });
 
-test('ogorod: flat up to 3 sot., then per-sotka with mins', () => {
-  assert.strictEqual(calcPrice('ogorod', 3, false, cityFree), 1700);
-  assert.strictEqual(calcPrice('ogorod', 4, false, cityFree), 1700);
+test('ogorod: 300 UAH per sotka, minimum 5 sot.', () => {
+  assert.strictEqual(calcPrice('ogorod', 5, false, cityFree), 1500);
   assert.strictEqual(calcPrice('ogorod', 6, false, cityFree), 1800);
 });
 
-test('ogorod: below minimum area rejected (after rounding)', () => {
-  assert.throws(() => calcPrice('ogorod', 2.4, false, cityFree), /Area must be between 3/);
+test('ogorod: below 5 sot. rejected (after rounding)', () => {
+  assert.throws(() => calcPrice('ogorod', 4.4, false, cityFree), /Area must be between 5/);
 });
 
 test('celina: rate with minimum', () => {
@@ -38,7 +37,7 @@ test('celina: rate with minimum', () => {
 });
 
 test('out_of_city adds fixed surcharge (800 UAH)', () => {
-  assert.strictEqual(calcPrice('ogorod', 3, true, cityLegacy), 1700 + OUT_OF_CITY_SURCHARGE_UAH);
+  assert.strictEqual(calcPrice('ogorod', 5, true, cityLegacy), 1500 + OUT_OF_CITY_SURCHARGE_UAH);
   assert.strictEqual(OUT_OF_CITY_SURCHARGE_UAH, 800);
 });
 

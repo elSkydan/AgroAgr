@@ -14,17 +14,15 @@ const MIN_ORDER       = 1000;
 const OUT_OF_CITY_SURCHARGE_UAH = 800;
 
 const SERVICE_MIN_AREA = {
-  ogorod: 3,
+  ogorod: 5,
   celina: 3,
   mowing: 10,
   tree: MIN_AREA_GLOBAL,
   washing: MIN_AREA_GLOBAL,
 };
 
-const OGOROD_FLAT_THRESHOLD = 3;
-const OGOROD_FLAT_PRICE     = 1700;
+/** Огород: 300 UAH per 0.5 sot. step (per full sotka), min 5 sot. */
 const OGOROD_RATE_PER_SOTKA = 300;
-const OGOROD_MIN            = 1700;
 
 const CELINA_RATE_PER_SOTKA = 600;
 const CELINA_MIN            = 1800;
@@ -73,10 +71,7 @@ function calcPrice(serviceType, rawArea, outOfCity, _city) {
   let price;
 
   if (serviceType === 'ogorod') {
-    price = area <= OGOROD_FLAT_THRESHOLD
-      ? OGOROD_FLAT_PRICE
-      : area * OGOROD_RATE_PER_SOTKA;
-    price = Math.max(price, OGOROD_MIN);
+    price = area * OGOROD_RATE_PER_SOTKA;
 
   } else if (serviceType === 'celina') {
     price = area * CELINA_RATE_PER_SOTKA;

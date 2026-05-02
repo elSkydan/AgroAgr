@@ -160,10 +160,7 @@ const OUT_OF_CITY_SURCHARGE_UAH = 800;
 
 const MAX_AREA_DISPLAY = 50;
 
-const OGOROD_FLAT_THRESHOLD = 3;
-const OGOROD_FLAT_PRICE = 1700;
 const OGOROD_RATE_PER_SOTKA = 300;
-const OGOROD_MIN = 1700;
 const CELINA_RATE_PER_SOTKA = 600;
 const CELINA_MIN = 1800;
 
@@ -185,6 +182,7 @@ function roundArea(raw) {
 function minAreaForService(serviceType) {
   switch (serviceType) {
     case 'ogorod':
+      return 5;
     case 'celina':
       return 3;
     case 'mowing':
@@ -213,8 +211,7 @@ function calcClientPreview(serviceType, rawArea, outOfCity) {
 
   let price;
   if (serviceType === 'ogorod') {
-    price = area <= OGOROD_FLAT_THRESHOLD ? OGOROD_FLAT_PRICE : area * OGOROD_RATE_PER_SOTKA;
-    price = Math.max(price, OGOROD_MIN);
+    price = area * OGOROD_RATE_PER_SOTKA;
   } else if (serviceType === 'celina') {
     price = area * CELINA_RATE_PER_SOTKA;
     price = Math.max(price, CELINA_MIN);
@@ -248,11 +245,7 @@ function formatFormula(serviceType, area, outOfCity, preview) {
 
   let line;
   if (serviceType === 'ogorod') {
-    if (area <= OGOROD_FLAT_THRESHOLD) {
-      line = `Огород: ≤${OGOROD_FLAT_THRESHOLD} сот. — ${OGOROD_FLAT_PRICE} грн`;
-    } else {
-      line = `Огород: ${area} × ${OGOROD_RATE_PER_SOTKA} грн (мін. ${OGOROD_MIN} грн)`;
-    }
+    line = `Огород: ${area} × ${OGOROD_RATE_PER_SOTKA} грн/сот. (мін. 5 сот.)`;
   } else if (serviceType === 'celina') {
     line = `Цілина: ${area} × ${CELINA_RATE_PER_SOTKA} грн (мін. ${CELINA_MIN} грн)`;
   } else if (serviceType === 'mowing') {
