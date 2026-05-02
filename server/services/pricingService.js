@@ -17,8 +17,8 @@ const SERVICE_MIN_AREA = {
   ogorod: 5,
   celina: 3,
   mowing: 10,
-  tree: MIN_AREA_GLOBAL,
-  washing: MIN_AREA_GLOBAL,
+  tree: 1,
+  washing: 1,
 };
 
 /** Огород: 300 UAH per 0.5 sot. step (per full sotka), min 5 sot. */
@@ -27,11 +27,11 @@ const OGOROD_RATE_PER_SOTKA = 300;
 const CELINA_RATE_PER_SOTKA = 600;
 const CELINA_MIN            = 1800;
 
-const MOWING_RATE_PER_SOTKA = 150;
-const MOWING_MIN            = 150;
+const MOWING_RATE_PER_SOTKA = 200;
+const MOWING_MIN            = 200;
 
 const TREE_MIN    = 500;
-const WASHING_MIN = 200;
+const WASHING_MIN = 250;
 
 /**
  * Round area UP to the nearest 0.5 sotka.
@@ -46,6 +46,42 @@ function minAreaForService(serviceType) {
 }
 
 /**
+ * Rounded sotkas, clamped to service minimum and capped at MAX_AREA.
+ * Values below min become min; above max become MAX_AREA; invalid raw yields NaN.
+ */
+function effectiveAreaForService(serviceType, rawArea) {
+  const r = roundArea(rawArea);
+  if (!Number.isFinite(r)) return NaN;
+  const capped = Math.min(r, MAX_AREA);
+  return Math.max(capped, minAreaForService(serviceType));
+}
+
+/** Lowest legal total (UAH, after MIN_ORDER) for this service at min area + optional виїзд. */
+function minimumBillForService(serviceType, outOfCity) {
+  const a = minAreaForService(serviceType);
+  let price;
+
+  if (serviceType === 'ogorod') {
+    price = a * OGOROD_RATE_PER_SOTKA;
+  } else if (serviceType === 'celina') {
+    price = a * CELINA_RATE_PER_SOTKA;
+    price = Math.max(price, CELINA_MIN);
+  } else if (serviceType === 'mowing') {
+    price = a * MOWING_RATE_PER_SOTKA;
+    price = Math.max(price, MOWING_MIN);
+  } else if (serviceType === 'tree') {
+    price = TREE_MIN;
+  } else if (serviceType === 'washing') {
+    price = WASHING_MIN;
+  } else {
+    return NaN;
+  }
+
+  if (outOfCity) price += OUT_OF_CITY_SURCHARGE_UAH;
+  return Math.round(Math.max(price, MIN_ORDER));
+}
+
+/**
  * Calculate total price for a lead.
  *
  * @param {'ogorod'|'celina'|'mowing'|'tree'|'washing'} serviceType
@@ -56,14 +92,11 @@ function minAreaForService(serviceType) {
  * @throws {Error}
  */
 function calcPrice(serviceType, rawArea, outOfCity, _city) {
-  const area = roundArea(rawArea);
-  const minForService = minAreaForService(serviceType);
+  const area = effectiveAreaForService(serviceType, rawArea);
 
-  if (!Number.isFinite(area) || area < minForService || area > MAX_AREA) {
+  if (!Number.isFinite(area)) {
     throw Object.assign(
-      new Error(
-        `Area must be between ${minForService} and ${MAX_AREA} sotki for "${serviceType}". Got: ${rawArea}`
-      ),
+      new Error(`Area must be a valid number of sotki for "${serviceType}". Got: ${rawArea}`),
       { code: 'INVALID_AREA', statusCode: 422 }
     );
   }
@@ -98,14 +131,17 @@ function calcPrice(serviceType, rawArea, outOfCity, _city) {
     price += OUT_OF_CITY_SURCHARGE_UAH;
   }
 
-  // Round to nearest integer UAH, then apply absolute floor
-  return Math.round(Math.max(price, MIN_ORDER));
+  const candidate = Math.round(Math.max(price, MIN_ORDER));
+  const floorMin = minimumBillForService(serviceType, outOfCity);
+  return Math.max(candidate, floorMin);
 }
 
 module.exports = {
   calcPrice,
   roundArea,
   minAreaForService,
+  effectiveAreaForService,
+  minimumBillForService,
   MAX_AREA,
   OUT_OF_CITY_SURCHARGE_UAH,
 };
