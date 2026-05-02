@@ -1,8 +1,8 @@
 'use strict';
 
-const VALID_SERVICE_TYPES = ['ogorod', 'celina'];
-const MIN_AREA = 0.5;
-const MAX_AREA = 50;
+const { roundArea, minAreaForService, MAX_AREA } = require('../services/pricingService');
+
+const VALID_SERVICE_TYPES = ['ogorod', 'celina', 'mowing', 'tree', 'washing'];
 
 function normalizePhone(raw) {
   if (!raw || typeof raw !== 'string') {
@@ -30,9 +30,17 @@ function validateLead(req, res, next) {
   }
 
   const area = parseFloat(body.area);
-  if (!Number.isFinite(area) || area < MIN_AREA || area > MAX_AREA) {
-    errors.push({ field: 'area', message: `Area must be between ${MIN_AREA} and ${MAX_AREA} sotki` });
+  let areaErr = null;
+  if (!Number.isFinite(area)) {
+    areaErr = 'Invalid area';
+  } else if (VALID_SERVICE_TYPES.includes(body.service_type)) {
+    const rounded = roundArea(area);
+    const minA = minAreaForService(body.service_type);
+    if (rounded < minA || rounded > MAX_AREA) {
+      areaErr = `Area must be between ${minA} and ${MAX_AREA} sotki for this service`;
+    }
   }
+  if (areaErr) errors.push({ field: 'area', message: areaErr });
 
   const cityId = parseInt(body.city_id, 10);
   if (!Number.isFinite(cityId) || cityId < 1) {

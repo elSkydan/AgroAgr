@@ -1,14 +1,26 @@
 'use strict';
 
+const path = require('path');
+
+const originalResolve = path.resolve;
+
+path.resolve = function (...args) {
+  if (args.includes(null) || args.includes(undefined)) {
+    console.error('💥 NULL PATH DETECTED:', args);
+  }
+  return originalResolve.apply(this, args);
+};
+
 require('dotenv').config();
 
 const express    = require('express');
 const app        = express();
 const pool       = require('./db/pool');
 
-const leadsRoute   = require('./server/routes/leads');
-const workersRoute = require('./server/routes/workers');
-const citiesRoute  = require('./server/routes/cities');
+const leadsRoute    = require('./server/routes/leads');
+const workersRoute  = require('./server/routes/workers');
+const citiesRoute   = require('./server/routes/cities');
+const telegramRoute = require('./server/routes/telegram');
 const { startTimeoutCron } = require('./server/services/timeoutService');
 
 const PORT = process.env.PORT || 3000;
@@ -21,7 +33,6 @@ const CORS_ORIGIN = process.env.CORS_ORIGIN || 'http://localhost:5173';
 
 app.use((req, res, next) => {
   const origin = req.headers.origin;
-  // Allow configured origin or wildcard fallback
   if (CORS_ORIGIN === '*' || origin === CORS_ORIGIN) {
     res.setHeader('Access-Control-Allow-Origin', origin || '*');
   }
@@ -37,6 +48,15 @@ app.use((req, res, next) => {
 
 app.use(express.json());
 
+// Раздаем все файлы из корня (index.html, стили, скрипты)
+//app.use(express.static(path.join(__dirname, '/')));
+//app.use(express.static(path.resolve(__dirname)));
+app.use(express.static(__dirname));
+// Маршрут для главной страницы
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'DENY');
@@ -47,9 +67,10 @@ app.use((req, res, next) => {
 // Routes
 // ---------------------------------------------------------------------------
 
-app.use('/api/leads',   leadsRoute);
-app.use('/api/workers', workersRoute);
-app.use('/api/cities',  citiesRoute);
+app.use('/api/leads',    leadsRoute);
+app.use('/api/workers',  workersRoute);
+app.use('/api/cities',   citiesRoute);
+app.use('/api/telegram', telegramRoute);
 
 // Health check
 app.get('/health', async (req, res) => {

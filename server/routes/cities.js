@@ -2,11 +2,11 @@
 
 const express = require('express');
 const router  = express.Router();
-const pool    = require('../db/pool');
-const requireAdminAuth = require('../middlewares/auth');
+const pool    = require('../../db/pool');
+const auth    = require('../middlewares/auth');
 
 // GET /api/cities
-router.get('/', requireAdminAuth, async (req, res) => {
+router.get('/', auth, async (req, res) => {
   try {
     const { rows } = await pool.query(
       `SELECT id, name, delivery_type, delivery_price, base_radius, created_at
@@ -21,7 +21,7 @@ router.get('/', requireAdminAuth, async (req, res) => {
 });
 
 // POST /api/cities
-router.post('/', requireAdminAuth, async (req, res) => {
+router.post('/', auth, async (req, res) => {
   const { name, delivery_type = 'fixed', delivery_price = 0, base_radius } = req.body;
 
   if (!name) return res.status(400).json({ error: 'name is required' });
@@ -41,7 +41,7 @@ router.post('/', requireAdminAuth, async (req, res) => {
 });
 
 // PATCH /api/cities/:id
-router.patch('/:id', requireAdminAuth, async (req, res) => {
+router.patch('/:id', auth, async (req, res) => {
   const id = parseInt(req.params.id, 10);
   if (!Number.isFinite(id)) return res.status(400).json({ error: 'Invalid city id' });
 

@@ -9,7 +9,7 @@
 │   └── style.css
 │
 ├── server/
-│   ├── app.js                      # Express app factory (no listen here)
+│   ├── main.js                      # Express app factory (no listen here)
 │   ├── server.js                   # Entry point: app.listen + graceful shutdown
 │   │
 │   ├── controllers/
@@ -50,7 +50,7 @@
 
 ## Key decisions
 
-- `app.js` vs `server.js` split — makes integration testing possible without binding a port.
+- `main.js` vs `server.js` split — makes integration testing possible without binding a port.
 - `admin.js` route merges workers + cities under one auth-protected router (cleaner than 3 separate route files for MVP).
 - `config/config.js` centralises all magic numbers: `TIMEOUT_MINUTES`, `SPAM_WINDOW_MINUTES`, `RATE_LIMIT_MAX`, `ACCEPTED_TTL_MINUTES`. No hardcoded values inside services.
 - No repository/DAO layer — direct `pool.query()` inside services is acceptable for this scale. Add a `db/` query-helper module only if query count grows beyond ~30 unique queries.

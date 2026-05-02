@@ -125,4 +125,20 @@ async function answerCallback(callbackQueryId, text = '') {
   });
 }
 
-module.exports = { sendLeadToWorker, notifyAdmin, answerCallback };
+/**
+ * Edit a worker message and clear inline keyboard after decision.
+ *
+ * @param {number} chatId
+ * @param {number} messageId
+ * @param {string} text
+ */
+async function editMessageText(chatId, messageId, text) {
+  await telegramPost('editMessageText', {
+    chat_id: chatId,
+    message_id: messageId,
+    text,
+    reply_markup: { inline_keyboard: [] },
+  });
+}
+
+module.exports = { sendLeadToWorker, notifyAdmin, answerCallback, editMessageText };

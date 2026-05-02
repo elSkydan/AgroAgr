@@ -181,9 +181,36 @@ body {
 ======================================== */
 input[type="text"],
 input[type="tel"],
+input[type="number"],
 select,
 textarea {
   font-family: inherit;
+}
+
+/* Calculator — live price emphasis */
+.calc-price-display {
+  display: inline-block;
+  transition: transform 0.35s ease, opacity 0.35s ease, color 0.35s ease;
+}
+
+.calc-price-display--pulse {
+  animation: calcPriceBump 0.5s ease;
+}
+
+@keyframes calcPriceBump {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  35% {
+    transform: scale(1.07);
+    opacity: 0.88;
+    color: #2d5c23;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 select option {
@@ -198,6 +225,7 @@ select option {
     opacity: 0;
     transform: translateY(24px);
   }
+}
   to {
     opacity: 1;
     transform: translateY(0);
@@ -208,16 +236,14 @@ select option {
   animation: fadeInUp 0.5s ease both;
 }
 
-/* ========================================
+
    SCROLL PROGRESS TRACK ON SLIDER
-======================================== */
 .range-slider-track {
   position: relative;
 }
 
-/* ========================================
+
    RESPONSIVE ADJUSTMENTS
-======================================== */
 @media (max-width: 640px) {
   h1 {
     font-size: 2.25rem;
@@ -225,26 +251,23 @@ select option {
   }
 }
 
-/* ========================================
+
    UTILITY: smooth transitions for
    before/after section image labels
-======================================== */
 .ba-label {
   transition: background 0.2s;
 }
 
-/* ========================================
+
    PRIMARY COLOR CSS VARS
-======================================== */
 :root {
   --color-primary: #3E7B31;
   --color-primary-dark: #2d5c23;
   --color-primary-light: #4e9a3d;
 }
 
-/* ========================================
+
    FOCUS VISIBLE
-======================================== */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,

@@ -11,7 +11,7 @@
  * Max 1 reassignment attempt per lead per timeout event.
  */
 
-const pool             = require('../db/pool');
+const pool             = require('../../db/pool');
 const { reassignLead } = require('./assignmentService');
 const telegramService  = require('./telegramService');
 const {
