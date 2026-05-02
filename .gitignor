@@ -1,0 +1,112 @@
+# =========================
+# Dependencies
+# =========================
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# =========================
+# Environment variables (CRITICAL)
+# =========================
+.env
+.env.*
+!.env.example
+
+# =========================
+# Build outputs (frontend/backend)
+# =========================
+dist/
+build/
+out/
+.next/
+.nuxt/
+coverage/
+
+# =========================
+# Vite / React / frontend caches
+# =========================
+.vite/
+.cache/
+.parcel-cache/
+.eslintcache
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# =========================
+# Runtime / system
+# =========================
+pids/
+*.pid
+*.seed
+
+# =========================
+# OS files
+# =========================
+.DS_Store
+Thumbs.db
+
+# =========================
+# IDE / Editor
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# =========================
+# Database dumps / local backups
+# =========================
+*.sql
+*.dump
+*.backup
+
+# =========================
+# PostgreSQL / Prisma (if used later)
+# =========================
+prisma/migrations/dev/
+*.db
+
+# =========================
+# Docker (optional overrides)
+# =========================
+docker-compose.override.yml
+
+# =========================
+# Supabase (if using CLI)
+# =========================
+.supabase/
+supabase/.temp/
+
+# =========================
+# AI / Claude / tooling caches
+# =========================
+.claude/
+.cursor/
+.ai/
+.openai/
+
+# =========================
+# Testing
+# =========================
+coverage/
+
+# =========================
+# Temporary files
+# =========================
+tmp/
+temp/
+*.tmp
+
+# =========================
+# Git misc
+# =========================
+*.orig
+*.rej
