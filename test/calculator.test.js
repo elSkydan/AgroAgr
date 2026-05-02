@@ -27,8 +27,8 @@ test('ogorod: 300 UAH per sotka, minimum 5 sot.', () => {
   assert.strictEqual(calcPrice('ogorod', 6, false, cityFree), 1800);
 });
 
-test('ogorod: below 5 sot. rejected (after rounding)', () => {
-  assert.throws(() => calcPrice('ogorod', 4.4, false, cityFree), /Area must be between 5/);
+test('ogorod: below min area clamps to minimum (after rounding)', () => {
+  assert.strictEqual(calcPrice('ogorod', 4.4, false, cityFree), 1500);
 });
 
 test('celina: rate with minimum', () => {
@@ -41,12 +41,13 @@ test('out_of_city adds fixed surcharge (800 UAH)', () => {
   assert.strictEqual(OUT_OF_CITY_SURCHARGE_UAH, 800);
 });
 
-test('mowing: per-sotka with minimum area 10', () => {
-  assert.strictEqual(calcPrice('mowing', 10, false, cityFree), 1500);
-  assert.throws(() => calcPrice('mowing', 9.4, false, cityFree), /Area must be between 10/);
+test('mowing: 200 UAH/sot., minimum area 10', () => {
+  assert.strictEqual(calcPrice('mowing', 10, false, cityFree), 2000);
+  assert.strictEqual(calcPrice('mowing', 9.4, false, cityFree), 2000);
 });
 
-test('tree and washing: fixed floor then MIN_ORDER', () => {
-  assert.strictEqual(calcPrice('tree', 5, false, cityFree), 1000);
-  assert.strictEqual(calcPrice('washing', 5, false, cityFree), 1000);
+test('tree and washing: fixed minimums, floor MIN_ORDER', () => {
+  assert.strictEqual(calcPrice('tree', 1, false, cityFree), 1000);
+  assert.strictEqual(calcPrice('washing', 1, false, cityFree), 1000);
+  assert.strictEqual(calcPrice('tree', 0.4, false, cityFree), 1000);
 });

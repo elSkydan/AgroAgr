@@ -195,7 +195,7 @@
             Обробка целини можлива будь-якої пори, навіть взимку при плюсових температурах. Перетворимо запущену ділянку на готовий ґрунт під посадку.
           </p>
           <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-            <span class="text-primary font-bold text-lg">від 500 грн</span>
+            <span class="text-primary font-bold text-lg">від 600 грн</span>
             <span class="text-gray-400 text-xs uppercase tracking-wide">За домовленістю</span>
           </div>
         </div>
@@ -207,10 +207,10 @@
           </div>
           <h3 class="text-lg font-bold text-gray-900 mb-2">Покос трави</h3>
           <p class="text-gray-500 text-sm leading-relaxed mb-4">
-            Покос трави роторною косилкою. Швидко та якісно обробимо ділянки будь-якої площі — від невеликого двору до великого поля.
+            Покос трави фрезами. Швидко та якісно обробимо ділянки від 10 соток — орієнтовно за ставкою калькулятора.
           </p>
           <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-            <span class="text-primary font-bold text-lg">від 150 грн</span>
+            <span class="text-primary font-bold text-lg">від 200 грн/сот.</span>
             <span class="text-gray-400 text-xs uppercase tracking-wide">За домовленістю</span>
           </div>
         </div>
@@ -240,7 +240,7 @@
             Мийка техніки та обладнання мобільною дизельною мийкою високого тиску 200 бар. Якісна чистка прямо у вас на ділянці.
           </p>
           <div class="flex items-center justify-between pt-4 border-t border-gray-100">
-            <span class="text-primary font-bold text-lg">від 200 грн</span>
+            <span class="text-primary font-bold text-lg">від 250 грн</span>
             <span class="text-gray-400 text-xs uppercase tracking-wide">За домовленістю</span>
           </div>
         </div>
@@ -296,16 +296,17 @@
               <label class="block text-sm font-medium text-gray-700 mb-2">Послуга</label>
               <div class="relative">
                 <select id="calc-service" class="w-full appearance-none bg-white border border-gray-200 rounded-xl px-4 py-3 pr-10 text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary cursor-pointer">
-                  <option value="ogorod">🌾 Огород / вспашка — від 300 грн</option>
-                  <option value="celina">🌿 Цілина — від 600 грн</option>
-                  <option value="mowing">🌺 Покос трави — 150 грн/сот.</option>
+                  <option value="ogorod">🌾 Огород / вспашка — від 300 грн/сот.</option>
+                  <option value="celina">🌿 Цілина — від 600 грн/сот.</option>
+                  <option value="mowing">🌺 Покос трави — 200 грн/сот. (фрезами)</option>
                   <option value="tree">🌳 Демонтаж дерева — від 500 грн</option>
-                  <option value="washing">🚿 Мийка техніки — від 200 грн</option>
+                  <option value="washing">🚿 Мийка техніки — від 250 грн</option>
                 </select>
                 <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3">
                   <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i>
                 </div>
               </div>
+              <p id="calc-service-note" class="text-xs text-gray-500 mt-2 min-h-[1.25rem]" aria-live="polite"></p>
             </div>
             <!-- Area (sotkas) -->
             <div id="area-section" class="mb-6">
@@ -314,7 +315,7 @@
               <p id="calc-area-hint" class="text-xs text-gray-500 mt-1">Мінімум 5 сот. · максимум 50 сот.</p>
               <p class="text-xs text-gray-500 mt-2">
                 Для розрахунку: <span id="area-effective" class="text-primary font-semibold">5</span> сот.
-                <span class="text-gray-400">(округлення до 0,5 сот.)</span>
+                <span class="text-gray-400">(округлення до 0,5 сотки)</span>
               </p>
             </div>
             <!-- Outskirts & grass (UI) -->
@@ -378,11 +379,11 @@
                 <label class="block text-sm font-medium text-gray-700 mb-2">Яка послуга потрібна?</label>
                 <div class="relative">
                   <select id="form-service" class="w-full appearance-none bg-white border border-gray-200 rounded-xl px-4 py-3 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary cursor-pointer">
-                    <option value="ogorod">🌾 Огород / вспашка — від 300 грн</option>
-                    <option value="celina">🌿 Цілина — від 600 грн</option>
-                    <option value="mowing">🌺 Покос трави — 150 грн/сот.</option>
+                    <option value="ogorod">🌾 Огород / вспашка — від 300 грн/сот.</option>
+                    <option value="celina">🌿 Цілина — від 600 грн/сот.</option>
+                    <option value="mowing">🌺 Покос трави — 200 грн/сот. (фрезами)</option>
                     <option value="tree">🌳 Демонтаж дерева — від 500 грн</option>
-                    <option value="washing">🚿 Мийка техніки — від 200 грн</option>
+                    <option value="washing">🚿 Мийка техніки — від 250 грн</option>
                   </select>
                   <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3">
                     <i data-lucide="chevron-down" class="w-4 h-4 text-gray-400"></i>
