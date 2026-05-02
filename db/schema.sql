@@ -7,7 +7,7 @@
 
 CREATE TYPE delivery_type_enum    AS ENUM ('fixed', 'per_km');
 CREATE TYPE equipment_type_enum   AS ENUM ('motoblock', 'tractor');
-CREATE TYPE service_type_enum     AS ENUM ('ogorod', 'celina');
+CREATE TYPE service_type_enum     AS ENUM ('ogorod', 'celina', 'mowing', 'tree', 'washing');
 
 CREATE TYPE lead_status_enum AS ENUM (
   'new',

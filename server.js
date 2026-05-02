@@ -13,7 +13,6 @@ path.resolve = function (...args) {
 
 require('dotenv').config();
 
-const path = require('path');
 const express    = require('express');
 const app        = express();
 const pool       = require('./db/pool');
